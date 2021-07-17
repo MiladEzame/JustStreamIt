@@ -29,7 +29,7 @@ document.getElementById('button1').addEventListener('click', loadMovie);
 function loadMovie(){
 
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:8000/api/v1/titles/9?format=json', true)
+    xhr.open('GET', 'http://localhost:8000/api/v1/titles/2646', true)
 
     xhr.onload = function(){
     if(this.status == 200){
@@ -37,9 +37,17 @@ function loadMovie(){
         
         var output = '';
         output += '<ul>' + 
-        '<li>ID: ' + movie.id + '</li>' + 
-        '<li>TITLE : ' + movie.title + '</li>' + 
-        '<li>IMDB SCORE : ' + movie.imdb_score + '</li>' +
+        '<img src = "' + movie.image_url + '"</img src>' + 
+        '<li>Genre(s): ' + movie.genres + '</li>' + 
+        '<li>Published : ' + movie.date_published + '</li>' + 
+        '<li>Title : ' + movie.title + '</li>' + 
+        '<li>Rated : ' + movie.rated + '</li>' + 
+        '<li>IMDB Score : ' + movie.imdb_score + '</li>' +
+        '<li>Director(s) : ' + movie.directors + '</li>' + 
+        '<li>Actors : ' + movie.actors + '</li>' + 
+        '<li>Duration : ' + movie.duration + '</li>' + 
+        '<li>Box Office Result : ' + movie.avg_vote + '</li>' + 
+        '<li>Description : ' + movie.description + '</li>'        
         '</ul>';
         document.getElementById('movie').innerHTML = output;
         }
