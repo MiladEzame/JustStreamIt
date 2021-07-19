@@ -1,0 +1,21 @@
+{
+  "name": "sass-code",
+  "version": "1.0.0",
+  "description": "**Version 1.0**",
+  "main": "script.js",
+  "scripts": {
+    "sass": "sass --watch ./sass/main.scss:css/styles.css",
+    "prefix": "postcss ./css/styles.css --use autoprefixer -d ./css/prefixed/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MiladEzame/JustStreamIt.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "browserslist": "last 4 versions",
+  "bugs": {
+    "url": "https://github.com/MiladEzame/JustStreamIt/issues"
+  },
+  "homepage": "https://github.com/MiladEzame/JustStreamIt#readme"
+}
