@@ -12,22 +12,27 @@ modalclose.addEventListener("click", function(){
 })
 
 function show_output(output, movie){
-    output += "<div class='title'> " +
-    "<h1>"  + movie.title + '</h1></div>' + 
-    "<div class='release-info'> " +
+    output += "<div class='movie-title'> " +
+    "<h1>"  + movie.title + '</h1></div><br>' + 
+    "<div class='release-info'><br> " +
     "<table><tr><th>Genre: "  + movie.genres + "</th>" +
     "<th>Published: "  + movie.date_published + "</th>" +
     "<th>Duration: "  + movie.duration + "</th></tr></table></div>" +
-    "<div class='ratings'> " +
+    "<div class='ratings'><br> " +
     "<table><tr><th>Rated: "  + movie.rated + "</th>" +
     "<th>IMDB score: "  + movie.imdb_score + "</th>" +
     "<th>Box Office Rating: "  + movie.avg_vote + "</th></tr></table></div>" +
-    "<p>" + movie.description + "</p>" +
-    "Casting: " + movie.actors;
+    "<p><br>Description: " + movie.description + "</p>" +
+    "<br>Casting: " + movie.actors;
     return output
 }
 
 modalBtn.addEventListener("click", loadMovie);
+
+function loadpage(url){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true)
+}
 
 function loadMovie(){
 
