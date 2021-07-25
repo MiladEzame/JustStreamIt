@@ -29,7 +29,7 @@ function show_output(output, movie){
 }
 */
 
-modalBtn.addEventListener("click", getMovie())
+
 
 function loadpage(url){
     var xhr = new XMLHttpRequest();
@@ -51,6 +51,31 @@ function getMovieImage(){
     })    
 }
 
+function getMoviesData(){
+    output = ""
+    fetch("http://localhost:8000/api/v1/titles/")
+    .then(res => res.json())
+    .then(data => {
+        for (let i=0; i<data.results.length; i++){
+            output += '<br><img src = "' + data.results[i].image_url + '"</img src>' +
+            "<br><div class='movie-title'> " +
+            "<h1>"  + data.results[i].title + '</h1></div><br>' + 
+            "<div class='release-info'><br> " +
+            "<table><tr><th>Genre: "  + data.results[i].genres + "</th>" +
+            "<th>Published: "  + data.results[i].date_published + "</th>" +
+            "<th>Duration: "  + data.results[i].duration + "</th></tr></table></div>" +
+            "<div class='ratings'><br> " +
+            "<table><tr><th>Rated: "  + data.results[i].rated + "</th>" +
+            "<th>IMDB score: "  + data.results[i].imdb_score + "</th>" +
+            "<th>Box Office Rating: "  + data.results[i].avg_vote + "</th></tr></table></div>" +
+            "<p><br>Description: " + data.results[i].description + "</p>" +
+            "<br>Casting: " + data.results[i].actors;
+            document.querySelector(".first-category").innerHTML = output;
+        }
+    })
+}
+
+
 function getMovieData(){
     output = "";
     fetch('http://localhost:8000/api/v1/titles/2646')
@@ -71,6 +96,10 @@ function getMovieData(){
         document.getElementById("movie").innerHTML = output;
     })    
 }
+
+
+modalBtn.addEventListener("click", getMovie());
+getMoviesData();
 
 /* GET INFO WITH XMLHTTPREQUEST
 function loadMovie(){
