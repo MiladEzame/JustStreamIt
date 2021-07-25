@@ -11,6 +11,7 @@ modalclose.addEventListener("click", function(){
     modalBg.classList.remove('bg-active')
 })
 
+/* SHOW INFO FOR XMLHTTPREQUEST
 function show_output(output, movie){
     output += "<div class='movie-title'> " +
     "<h1>"  + movie.title + '</h1></div><br>' + 
@@ -26,14 +27,52 @@ function show_output(output, movie){
     "<br>Casting: " + movie.actors;
     return output
 }
+*/
 
-modalBtn.addEventListener("click", loadMovie);
+modalBtn.addEventListener("click", getMovie())
 
 function loadpage(url){
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true)
 }
 
+function getMovie(){
+    getMovieImage();
+    getMovieData();
+}
+
+function getMovieImage(){
+    output2 = "";
+    fetch('http://localhost:8000/api/v1/titles/2646')
+    .then(res => res.json())
+    .then(data => {
+        output2 += '<img src = "' + data.image_url + '"</img src>';
+        document.getElementById("img-movie").innerHTML = output2;
+    })    
+}
+
+function getMovieData(){
+    output = "";
+    fetch('http://localhost:8000/api/v1/titles/2646')
+    .then(res => res.json())
+    .then(data => {
+        output += "<div class='movie-title'> " +
+        "<h1>"  + data.title + '</h1></div><br>' + 
+        "<div class='release-info'><br> " +
+        "<table><tr><th>Genre: "  + data.genres + "</th>" +
+        "<th>Published: "  + data.date_published + "</th>" +
+        "<th>Duration: "  + data.duration + "</th></tr></table></div>" +
+        "<div class='ratings'><br> " +
+        "<table><tr><th>Rated: "  + data.rated + "</th>" +
+        "<th>IMDB score: "  + data.imdb_score + "</th>" +
+        "<th>Box Office Rating: "  + data.avg_vote + "</th></tr></table></div>" +
+        "<p><br>Description: " + data.description + "</p>" +
+        "<br>Casting: " + data.actors;
+        document.getElementById("movie").innerHTML = output;
+    })    
+}
+
+/* GET INFO WITH XMLHTTPREQUEST
 function loadMovie(){
 
     var xhr = new XMLHttpRequest();
@@ -55,3 +94,4 @@ function loadMovie(){
     
     xhr.send();
 }
+*/
