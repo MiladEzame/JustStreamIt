@@ -1,14 +1,28 @@
+
+
+const swiper = new Swiper(".swiper-container", {
+    direction: "horizontal",
+    loop: true,
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+    scrollbar: {
+        el: '.swiper-scrollbar',
+    },
+});
 var modalBtn = document.querySelector(".modal-btn");
-var modalBg = document.querySelector(".modal-bg")
-var modalclose = document.querySelector(".modal-close")
+var modalBg = document.querySelector(".modal-bg");
+var modalclose = document.querySelector(".modal-close");
+var swiperImage = document.querySelector(".swiper-wrapper")
 
 
 modalBtn.addEventListener("click", function(){
-    modalBg.classList.add('bg-active')
+    modalBg.classList.add('bg-active');
 })
 
 modalclose.addEventListener("click", function(){
-    modalBg.classList.remove('bg-active')
+    modalBg.classList.remove('bg-active');
 })
 
 /* SHOW INFO FOR XMLHTTPREQUEST
@@ -57,6 +71,19 @@ function getMoviesData(){
     .then(res => res.json())
     .then(data => {
         for (let i=0; i<data.results.length; i++){
+            output += '<br><img src = "' + data.results[i].image_url + '"</img src>'
+            document.querySelector(".swiper-wrapper").innerHTML = output;
+        }
+    })
+}
+
+/* to adapt
+function getMoviesData(){
+    output = ""
+    fetch("http://localhost:8000/api/v1/titles/")
+    .then(res => res.json())
+    .then(data => {
+        for (let i=0; i<data.results.length; i++){
             output += '<br><img src = "' + data.results[i].image_url + '"</img src>' +
             "<br><div class='movie-title'> " +
             "<h1>"  + data.results[i].title + '</h1></div><br>' + 
@@ -70,10 +97,10 @@ function getMoviesData(){
             "<th>Box Office Rating: "  + data.results[i].avg_vote + "</th></tr></table></div>" +
             "<p><br>Description: " + data.results[i].description + "</p>" +
             "<br>Casting: " + data.results[i].actors;
-            document.querySelector(".first-category").innerHTML = output;
+            document.querySelector(".swiper-wrapper").innerHTML = output;
         }
     })
-}
+}*/
 
 
 function getMovieData(){
@@ -100,6 +127,7 @@ function getMovieData(){
 
 modalBtn.addEventListener("click", getMovie());
 getMoviesData();
+
 
 /* GET INFO WITH XMLHTTPREQUEST
 function loadMovie(){

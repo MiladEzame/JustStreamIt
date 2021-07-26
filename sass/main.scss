@@ -55,6 +55,15 @@ header {
   }
 }
 
+.swiper-container {
+  width: 600px;
+  height: 300px;
+}
+
+.swiper-wrapper{
+  display: flex;
+}
+
 .modal-bg {
   top: 0;
   left: 0;

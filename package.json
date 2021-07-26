@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "**Version 1.0**",
   "main": "script.js",
+  "type": "module",
   "scripts": {
     "sass": "sass --watch ./sass/main.scss:css/styles.css",
     "prefix": "postcss ./css/styles.css --use autoprefixer -d ./css/prefixed/"
@@ -17,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/MiladEzame/JustStreamIt/issues"
   },
-  "homepage": "https://github.com/MiladEzame/JustStreamIt#readme"
+  "homepage": "https://github.com/MiladEzame/JustStreamIt#readme",
+  "dependencies": {
+    "swiper": "^6.8.0"
+  }
 }
