@@ -1,8 +1,8 @@
-
-
 const swiper = new Swiper(".swiper-container", {
-    direction: "horizontal",
-    loop: true,
+    direction: 'horizontal',
+      slidesPerView: 3,
+	  loop:true,
+    slidesPerView: 5,
     navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
@@ -11,50 +11,78 @@ const swiper = new Swiper(".swiper-container", {
         el: '.swiper-scrollbar',
     },
 });
-var modalBtn = document.querySelector(".modal-btn");
-var modalBg = document.querySelector(".modal-bg");
-var modalclose = document.querySelector(".modal-close");
-var swiperImage = document.querySelector(".swiper-wrapper")
 
+var modal = document.getElementById("myModal");
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+var swiperImage = document.querySelector(".swiper-wrapper");
+var bestMovieBtn = document.querySelector(".bestmovie-container");
+var bestMoviesSwiperWrapper = document.querySelector(".swiper-wrapper");
 
-modalBtn.addEventListener("click", function(){
-    modalBg.classList.add('bg-active');
-})
+bestMovieBtn.onclick = function() {
+    modal.style.display = "block";
+    getBestMovie();
+  }
+  
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
 
-modalclose.addEventListener("click", function(){
-    modalBg.classList.remove('bg-active');
-})
-
-/* SHOW INFO FOR XMLHTTPREQUEST
-function show_output(output, movie){
-    output += "<div class='movie-title'> " +
-    "<h1>"  + movie.title + '</h1></div><br>' + 
-    "<div class='release-info'><br> " +
-    "<table><tr><th>Genre: "  + movie.genres + "</th>" +
-    "<th>Published: "  + movie.date_published + "</th>" +
-    "<th>Duration: "  + movie.duration + "</th></tr></table></div>" +
-    "<div class='ratings'><br> " +
-    "<table><tr><th>Rated: "  + movie.rated + "</th>" +
-    "<th>IMDB score: "  + movie.imdb_score + "</th>" +
-    "<th>Box Office Rating: "  + movie.avg_vote + "</th></tr></table></div>" +
-    "<p><br>Description: " + movie.description + "</p>" +
-    "<br>Casting: " + movie.actors;
-    return output
-}
-*/
-
-
-
-function loadpage(url){
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true)
-}
-
+/* Gets the image of the movie and prints it on the left
+   Gets the data of the movie and prints it on the right
+   of the modal 
 function getMovie(){
     getMovieImage();
     getMovieData();
+}*/
+
+/* get the best rated movie */
+function getBestMovie(){
+    bestMovieOutput = "";
+    link = 'http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score';
+    fetch(link)
+    .then(res => res.json())
+    .then(data => {
+        bestMovieOutput += '<img src = "' + data.results[0].image_url + '"></img src>';
+        document.getElementById("img-movie").innerHTML = bestMovieOutput;
+    });
+    getBestMovieData(link);   
 }
 
+function bestMovieImage(){
+    bestMovieOutput = "";
+    link = 'http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score';
+    fetch(link)
+    .then(res => res.json())
+    .then(data => {
+        bestMovieOutput += '<img src = "' + data.results[0].image_url + '"></img src>';
+        document.querySelector(".bestmovie-container").innerHTML = bestMovieOutput;
+    });
+}
+
+function getBestMovieData(url){
+    moviedata = "";
+    fetch(url)
+    .then(res => res.json())
+    .then(data => {
+        moviedata += "<div class='movie-title'> " +
+        "<h1>"  + data.results[0].title + '</h1></div><br>' + 
+        "<div class='release-info'><br> " +
+        "<table><tr><th>Genre: "  + data.results[0].genres + "</th>" +
+        "<th>Published: "  + data.results[0].date_published + "</th>" +
+        "<th>Duration: "  + data.results[0].duration + "</th></tr></table></div>" +
+        "<div class='ratings'><br> " +
+        "<table><tr><th>Rated: "  + data.results[0].rated + "</th>" +
+        "<th>IMDB score: "  + data.results[0].imdb_score + "</th>" +
+        "<th>Box Office Rating: "  + data.results[0].avg_vote + "</th></tr></table></div>" +
+        "<p><br>Description: " + data.results[0].description + "</p>" +
+        "<br>Casting: " + data.results[0].actors;
+        document.getElementById("movie").innerHTML = moviedata;
+    });
+}
+
+/* get the image of a given movie through the URL and prints it on the left side of the modal
 function getMovieImage(){
     output2 = "";
     fetch('http://localhost:8000/api/v1/titles/2646')
@@ -63,8 +91,9 @@ function getMovieImage(){
         output2 += '<img src = "' + data.image_url + '"</img src>';
         document.getElementById("img-movie").innerHTML = output2;
     })    
-}
+}*/
 
+/* get the images of the different movies within the same page */
 function getMoviesData(){
     output = ""
     fetch("http://localhost:8000/api/v1/titles/")
@@ -72,37 +101,44 @@ function getMoviesData(){
     .then(data => {
         for (let i=0; i<data.results.length; i++){
             output += '<br><img src = "' + data.results[i].image_url + '"</img src>'
-            document.querySelector(".swiper-wrapper").innerHTML = output;
+            document.querySelector(".categorythree").innerHTML = output;
         }
     })
 }
 
-/* to adapt
-function getMoviesData(){
-    output = ""
-    fetch("http://localhost:8000/api/v1/titles/")
+function getBestRatedMovies(){
+    fetch("http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score")
     .then(res => res.json())
     .then(data => {
-        for (let i=0; i<data.results.length; i++){
-            output += '<br><img src = "' + data.results[i].image_url + '"</img src>' +
-            "<br><div class='movie-title'> " +
-            "<h1>"  + data.results[i].title + '</h1></div><br>' + 
-            "<div class='release-info'><br> " +
-            "<table><tr><th>Genre: "  + data.results[i].genres + "</th>" +
-            "<th>Published: "  + data.results[i].date_published + "</th>" +
-            "<th>Duration: "  + data.results[i].duration + "</th></tr></table></div>" +
-            "<div class='ratings'><br> " +
-            "<table><tr><th>Rated: "  + data.results[i].rated + "</th>" +
-            "<th>IMDB score: "  + data.results[i].imdb_score + "</th>" +
-            "<th>Box Office Rating: "  + data.results[i].avg_vote + "</th></tr></table></div>" +
-            "<p><br>Description: " + data.results[i].description + "</p>" +
-            "<br>Casting: " + data.results[i].actors;
-            document.querySelector(".swiper-wrapper").innerHTML = output;
+        for (let i=1; i<data.results.length; i++){
+            var imgElem = document.createElement("img");
+            var newDiv = document.createElement("div");
+            newDiv.className = "swiper-slide";
+            imgElem.setAttribute('src', data.results[i].image_url);
+            newDiv.appendChild(imgElem);
+            bestMoviesSwiperWrapper.appendChild(newDiv);
         }
     })
-}*/
+    getBestRatedMovies2();
+}
 
+function getBestRatedMovies2(){
+    bestRatedMoviesOutput2 = "";
+    fetch("http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score&page=2")
+    .then(res => res.json())
+    .then(data => {
+        for (let i=1; i<4; i++){
+            var imgElem = document.createElement("img");
+            var newDiv = document.createElement("div");
+            newDiv.className = "swiper-slide" ;
+            imgElem.setAttribute('src', data.results[i].image_url);
+            newDiv.appendChild(imgElem);
+            bestMoviesSwiperWrapper.appendChild(newDiv);
+        }
+    })
+}
 
+/* get the data of a given movie through the URL and prints it on the right side of the modal
 function getMovieData(){
     output = "";
     fetch('http://localhost:8000/api/v1/titles/2646')
@@ -122,33 +158,7 @@ function getMovieData(){
         "<br>Casting: " + data.actors;
         document.getElementById("movie").innerHTML = output;
     })    
-}
+}*/
 
-
-modalBtn.addEventListener("click", getMovie());
-getMoviesData();
-
-
-/* GET INFO WITH XMLHTTPREQUEST
-function loadMovie(){
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:8000/api/v1/titles/2646', true)
-
-    xhr.onload = function(){
-    if(this.status == 200){
-        var movie = JSON.parse(this.responseText);
-        
-        var output2 = '';
-        output2 += '<img src = "' + movie.image_url + '"</img src>'
-        document.getElementById("img-movie").innerHTML = output2
-
-        var output = '';
-        
-        document.getElementById('movie').innerHTML = show_output(output, movie);
-        }
-    }
-    
-    xhr.send();
-}
-*/
+bestMovieImage();
+getBestRatedMovies();

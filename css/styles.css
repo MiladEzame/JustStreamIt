@@ -9,6 +9,62 @@ nav {
   background: #880015;
 }
 
+.modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  padding-top: 100px;
+  /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: black;
+  color: red;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid white;
+  width: 80%;
+  display: flex;
+  justify-content: space-around;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.close:hover,
+.close:focus {
+  color: red;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 header {
   background: #880015;
   display: flex;
@@ -26,6 +82,15 @@ header a {
 header li {
   text-transform: uppercase;
   color: inherit;
+}
+
+body {
+  background: black;
+}
+body h1 {
+  justify-content: space-around;
+  text-align: center;
+  color: red;
 }
 
 .logo {
@@ -52,77 +117,35 @@ header li {
   color: white;
 }
 
-.swiper-container {
-  width: 600px;
+.bestmovie-container {
   height: 300px;
-}
-
-.swiper-wrapper {
   display: flex;
-}
-
-.modal-bg {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s, opacity 0.5s;
-}
-
-.bg-active {
-  visibility: visible;
-  opacity: 1;
-}
-
-.modal {
-  position: relative;
-  font-family: "Montserrat", sans-serif;
-  background-color: corn;
-  height: 90%;
-  width: 80%;
-  display: flex;
-  justify-content: space-around;
-}
-
-.split {
-  height: 100%;
-  width: 50%;
-  position: fixed;
-  z-index: 1;
-  overflow-x: hidden;
-  padding-top: 20px;
-}
-
-.split-left {
-  height: 100%;
-  width: 70%;
-  background-color: black;
   align-items: center;
   justify-content: center;
-  display: flex;
 }
 
-.split-right {
-  font-family: "Montserrat", sans-serif;
-  height: 100%;
-  width: 100%;
-  background-color: black;
-  display: flex;
-  color: red;
-}
-
-.modal-close {
-  font-weight: bold;
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.bestmovie-container:hover {
   cursor: pointer;
+}
+
+.swiper-container {
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.swiper-container .swiper-slide {
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container {
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .movie-title {
@@ -151,6 +174,8 @@ tr {
 #img-movie {
   width: 100%;
   height: 100%;
+  align-items: center;
+  justify-content: center;
   display: flex;
 }
 

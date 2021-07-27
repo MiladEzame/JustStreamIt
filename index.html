@@ -25,62 +25,106 @@
             </nav>
         </header>
 
-        <!-- Slider main container -->
-        <div class="swiper-container">
-            <!-- Additional required wrapper -->
-            <div class="swiper-wrapper">
-            <!-- Slides -->
-            <div class="swiper-slide">Slide 1</div>
-            <div class="swiper-slide">Slide 2</div>
-            <div class="swiper-slide">Slide 3</div>
-            <div class="swiper-slide">Slide 4</div>
-            <div class="swiper-slide">Slide 5</div>
-            <div class="swiper-slide">Slide 6</div>
-            <div class="swiper-slide">Slide 7</div>
+        <div class="bestmovie">
+            <h1>Best Rated Movie</h1><br>
+            <div class="bestmovie-container"></div>
+        </div>
+
+        <h1>Best Rated Movies</h1><br>
+        <div class="bestratedmovies">
+            <div class="swiper-container">
+                
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper">
+                    
+                </div>
+            
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            
             </div>
-        
-            <!-- If we need navigation buttons -->
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
-        
+
+        </div>
+
+        <!-- Slider main container -->
+        <div class="categoryone">
+            <h1>Best Action Movies</h1><br>
+            <div class="swiper-container">
+                
+
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">Slide 1</div>
+                    <div class="swiper-slide">Slide 2</div>
+                    <div class="swiper-slide">Slide 3</div>
+                    <div class="swiper-slide">Slide 4</div>
+                    <div class="swiper-slide">Slide 5</div>
+                    <div class="swiper-slide">Slide 6</div>
+                    <div class="swiper-slide">Slide 7</div>
+                </div>
+            
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            
+            </div>
         </div>
         
-        <div class="best-movie">
-            <h1>Best movie</h1>
-        </div><br>
+        <div class="categorytwo">
+            <h1>Best Romance Movies</h1><br>
+            <div class="swiper-container">
+                
 
-        <div class="best-rated-movies">
-            <h1>best rated movies</h1>
-        </div><br>
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper">
+                
+                </div>
+            
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            
+            </div>
+        </div>
 
-        <div class="first-category">
-            <h1>first category</h1>
-        </div><br>
-
-        <div class="second-category">
-            <h1>second category</h1> 
-        </div><br>
-
-        <div class="third-category">
-            <h1>third category</h1>
-        </div><br>
+        <div class="categorythree">
+            <h1>Best Comedy Movies</h1><br>
+            <div class="swiper-container">
+                
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">Slide 1</div>
+                    <div class="swiper-slide">Slide 2</div>
+                    <div class="swiper-slide">Slide 3</div>
+                    <div class="swiper-slide">Slide 4</div>
+                    <div class="swiper-slide">Slide 5</div>
+                    <div class="swiper-slide">Slide 6</div>
+                    <div class="swiper-slide">Slide 7</div>
+                </div>
+            
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            
+            </div>
+        </div>
         
 
-        <button class="modal-btn">Open Modal</button>
         <!-- The Modal -->
-        <div class="modal-bg">
+        <div id="myModal" class="modal">
             <!-- Modal content -->
-            <div class="modal">
-                
-                <div class="split-left">
-                    <div id="img-movie"></div>
+            <div  class="modal-content">
+                <div class="split">
+                    <div class="split-left">
+                        <div id="img-movie"></div>
+                    </div>
+    
+                    <div class="split-right">
+                        <div id = "movie"></div>
+                        <span class="close">&times;</span>
+                    </div>
                 </div>
-
-                <div class="split-right">
-                    <div id = "movie"></div>
-                    <span class="modal-close">&times;</span>
-                </div>
-
             </div>
         </div>
     </body>
