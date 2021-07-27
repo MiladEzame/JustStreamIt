@@ -124,7 +124,7 @@ body h1 {
   justify-content: center;
 }
 
-.bestmovie-container:hover {
+.bestmovie-container img:hover {
   cursor: pointer;
 }
 
@@ -139,6 +139,9 @@ body h1 {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.swiper-container .swiper-slide img:hover {
+  cursor: pointer;
 }
 
 .image-container {
