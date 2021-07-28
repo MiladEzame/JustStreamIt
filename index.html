@@ -27,7 +27,9 @@
 
         <div class="bestmovie">
             <h1>Best Rated Movie</h1>
-            <div class="bestmovie-container"></div>
+            <div class="bestmovie-container">
+                <img id="bestmovie-image">
+            </div>
         </div>
 
         <h1>Best Rated Movies</h1>
@@ -105,11 +107,28 @@
             <div  class="modal-content">
                 <div class="split">
                     <div class="split-left">
-                        <div id="img-movie"></div>
+                        <img id="img-modal">
                     </div>
     
                     <div class="split-right">
-                        <div id = "movie"></div>
+                        <h1 id="modal-title"></h1></br>
+                        <table>
+                            <tr>
+                                <th id="modal-genre"></th>
+                                <th id="modal-published"> </th>
+                                <th id="modal-duration"></th>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <th id="modal-rated"></th>
+                                <th id="modal-score"></th>
+                                <th id="modal-office-rating"></th>
+                            </tr>
+                        </table>
+                        <br><p id="modal-description"></p>
+                        <br><p id="modal-casting"></p>
+                        <img id="data-modal">
                         <span class="close">&times;</span>
                     </div>
                 </div>

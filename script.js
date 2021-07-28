@@ -1,6 +1,5 @@
 const swiper = new Swiper(".swiper-container", {
     direction: 'horizontal',
-      slidesPerView: 3,
 	  loop:true,
     slidesPerView: 5,
     navigation: {
@@ -11,9 +10,12 @@ const swiper = new Swiper(".swiper-container", {
         el: '.swiper-scrollbar',
     },
 });
+const base_url = "http://localhost:8000/api/v1/titles/";
+const sorted_by_score = "?sort_by=+-imdb_score";
+const sort_genre = "?genre="
+const nb_page = "?page="
 
 var modal = document.getElementById("myModal");
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 var swiperImage = document.querySelector(".swiper-wrapper");
 var bestMovieBtn = document.querySelector(".bestmovie-container");
@@ -70,8 +72,8 @@ function getBestMovie(){
     fetch(link)
     .then(res => res.json())
     .then(data => {
-        bestMovieOutput += '<img src = "' + data.results[0].image_url + '"></img src>';
-        document.getElementById("img-movie").innerHTML = bestMovieOutput;
+        console.log(data);
+        document.getElementById("img-modal").src = data.results[0].image_url;
     });
     getBestMovieData(link);   
 }
@@ -82,44 +84,34 @@ function bestMovieImage(){
     fetch(link)
     .then(res => res.json())
     .then(data => {
-        bestMovieOutput += '<img src = "' + data.results[0].image_url + '"></img src>';
-        document.querySelector(".bestmovie-container").innerHTML = bestMovieOutput;
+        document.getElementById("bestmovie-image").src = data.results[0].image_url;
     });
 }
 
+/* remettre tout le html dans le fichier html. NE pas passer de balise, juste passer l'id/class. 
+   Quand je click sur une image, passer l'url + id en parametre et utiliser cet url pour alimenter la modal.
+   Carousel : n'avoir plus qu'une fonction et passer le genre et nb de pages en paramètre.
+   Créer les slides div + img. Faire une fonction qui affiche toutes les images.
+   Créer un eventlistener onclick, appeler les méthodes de récupération de données
+   et les afficher dans la modal. 
+
+   */
+
 function getBestMovieData(url){
-    moviedata = "";
+    console.log(url);
     fetch(url)
     .then(res => res.json())
     .then(data => {
-        moviedata += "<div class='movie-title'> " +
-        "<h1>"  + data.results[0].title + '</h1></div><br>' + 
-        "<div class='release-info'><br> " +
-        "<table><tr><th>Genre: "  + data.results[0].genres + "</th>" +
-        "<th>Published: "  + data.results[0].date_published + "</th>" +
-        "<th>Duration: "  + data.results[0].duration + "</th></tr></table></div>" +
-        "<div class='ratings'><br> " +
-        "<table><tr><th>Rated: "  + data.results[0].rated + "</th>" +
-        "<th>IMDB score: "  + data.results[0].imdb_score + "</th>" +
-        "<th>Box Office Rating: "  + data.results[0].avg_vote + "</th></tr></table></div>" +
-        "<p><br>Description: " + data.results[0].description + "</p>" +
-        "<br>Casting: " + data.results[0].actors;
-        document.getElementById("movie").innerHTML = moviedata;
+            document.getElementById("modal-title").innerHTML = data.results[0].title;
+            document.getElementById("modal-genre").innerHTML = "Genre: " + data.results[0].genres;
+            document.getElementById("modal-published").innerHTML = "Published: " + data.results[0].date_published;
+            document.getElementById("modal-duration").innerHTML = "Duration: " + data.results[0].duration;
+            document.getElementById("modal-rated").innerHTML = "Rated: " + data.results[0].rated;
+            document.getElementById("modal-score").innerHTML = "Imdb Score: " + data.results[0].imdb_score;
+            document.getElementById("modal-office-rating").innerHTML = "Office Rating: " + data.results[0].avg_vote;
+            document.getElementById("modal-description").innerHTML = "Description: " + data.results[0].description;
+            document.getElementById("modal-casting").innerHTML = "Casting: " + data.results[0].actors;  
     });
-}
-
-
-/* get the images of the different movies within the same page */
-function getMoviesData(){
-    output = ""
-    fetch("http://localhost:8000/api/v1/titles/")
-    .then(res => res.json())
-    .then(data => {
-        for (let i=0; i<data.results.length; i++){
-            output += '<br><img src = "' + data.results[i].image_url + '"</img src>'
-            document.querySelector(".categorythree").innerHTML = output;
-        }
-    })
 }
 
 function getBestRatedMovies(){
@@ -244,28 +236,6 @@ function getBestRatedComedyMovies2(){
             bestComedyMoviesSwiperWrapper.appendChild(newDiv);
         }
     })
-}
-
-
-function getBestMovieData(url){
-    moviedata = "";
-    fetch(url)
-    .then(res => res.json())
-    .then(data => {
-        moviedata += "<div class='movie-title'> " +
-        "<h1>"  + data.results[0].title + '</h1></div><br>' + 
-        "<div class='release-info'><br> " +
-        "<table><tr><th>Genre: "  + data.results[0].genres + "</th>" +
-        "<th>Published: "  + data.results[0].date_published + "</th>" +
-        "<th>Duration: "  + data.results[0].duration + "</th></tr></table></div>" +
-        "<div class='ratings'><br> " +
-        "<table><tr><th>Rated: "  + data.results[0].rated + "</th>" +
-        "<th>IMDB score: "  + data.results[0].imdb_score + "</th>" +
-        "<th>Box Office Rating: "  + data.results[0].avg_vote + "</th></tr></table></div>" +
-        "<p><br>Description: " + data.results[0].description + "</p>" +
-        "<br>Casting: " + data.results[0].actors;
-        document.getElementById("movie").innerHTML = moviedata;
-    });
 }
 
 
