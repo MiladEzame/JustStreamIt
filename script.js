@@ -33,7 +33,6 @@ span.addEventListener('click', function() {
 
 
 function getBestMovie(){
-    bestMovieOutput = "";
     link = 'http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score';
     fetch(link)
     .then(res => res.json())
@@ -41,11 +40,10 @@ function getBestMovie(){
         console.log(data);
         document.getElementById("img-modal").src = data.results[0].image_url;
     });
-    getBestMovieData(link);   
+    getBestMovieData(link);
 }
 
 function bestMovieImage(){
-    bestMovieOutput = "";
     link = 'http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score';
     fetch(link)
     .then(res => res.json())
@@ -58,15 +56,15 @@ function getBestMovieData(url){
     fetch(url)
     .then(res => res.json())
     .then(data => {
-            document.getElementById("modal-title").innerHTML = data.results[0].title;
-            document.getElementById("modal-genre").innerHTML = "Genre: " + data.results[0].genres;
-            document.getElementById("modal-published").innerHTML = "Published: " + data.results[0].date_published;
-            document.getElementById("modal-duration").innerHTML = "Duration: " + data.results[0].duration;
-            document.getElementById("modal-rated").innerHTML = "Rated: " + data.results[0].rated;
-            document.getElementById("modal-score").innerHTML = "Imdb Score: " + data.results[0].imdb_score;
-            document.getElementById("modal-office-rating").innerHTML = "Office Rating: " + data.results[0].avg_vote;
-            document.getElementById("modal-description").innerHTML = "Description: " + data.results[0].description;
-            document.getElementById("modal-casting").innerHTML = "Casting: " + data.results[0].actors;  
+        document.getElementById("modal-title").innerHTML = data.results[0].title;
+        document.getElementById("modal-genre").innerHTML = "Genre: " + data.results[0].genres;
+        document.getElementById("modal-published").innerHTML = "Published: " + data.results[0].date_published;
+        document.getElementById("modal-duration").innerHTML = "Duration: " + data.results[0].duration;
+        document.getElementById("modal-rated").innerHTML = "Rated: " + data.results[0].rated;
+        document.getElementById("modal-score").innerHTML = "Imdb Score: " + data.results[0].imdb_score;
+        document.getElementById("modal-office-rating").innerHTML = "Office Rating: " + data.results[0].avg_vote;
+        document.getElementById("modal-description").innerHTML = "Description: " + data.results[0].description;
+        document.getElementById("modal-casting").innerHTML = "Casting: " + data.results[0].actors;  
     });
 }
 
@@ -99,37 +97,44 @@ function getMovieImagesByGenre(genre, swiperGenre){
                 var movie_id = data.results[i].id;
                 newDiv.appendChild(imgElem);
                 swiperGenre.appendChild(newDiv);
-                console.log(data.results[i].title)
-                /*getMovieData(movie_id);*/
-                if(page_image == 2 && i == 2){
+                imageSwiperBtn.addEventListener("click", function(){
+                    modal.style.display = block;
+                    getMovieGenreData(movie_id);
+                    getMovieImageid(movie_id);
+                })
+                if(page_image == 2 && i == 1){
                     break;
                 }
             }
         })
-        /* une fois l'id récupéré, appeler la fonction getMovieByGenre(id) */
     }
 }
 
-function getMovieData(id){
-    full_url = base_url + id
-    console.log(full_url)
-    fetch(full_url)
+function getMovieGenreData(id){
+    fetch(base_url + id)
     .then(res => res.json())
     .then(data => {
-        for (let i=0; i<data.results.length; i++){
-            document.getElementById("modal-title").innerHTML = data.results[i].title;
-            document.getElementById("modal-genre").innerHTML = "Genre: " + data.results[0].genres;
-            document.getElementById("modal-published").innerHTML = "Published: " + data.results[i].date_published;
-            document.getElementById("modal-duration").innerHTML = "Duration: " + data.results[i].duration;
-            document.getElementById("modal-rated").innerHTML = "Rated: " + data.results[i].rated;
-            document.getElementById("modal-score").innerHTML = "Imdb Score: " + data.results[i].imdb_score;
-            document.getElementById("modal-office-rating").innerHTML = "Office Rating: " + data.results[i].avg_vote;
-            document.getElementById("modal-description").innerHTML = "Description: " + data.results[i].description;
-            document.getElementById("modal-casting").innerHTML = "Casting: " + data.results[i].actors;  
-        }
+        document.getElementById("modal-title").innerHTML = data.title;
+        document.getElementById("modal-genre").innerHTML = "Genre: " + data.genres;
+        document.getElementById("modal-published").innerHTML = "Published: " + data.date_published;
+        document.getElementById("modal-duration").innerHTML = "Duration: " + data.duration;
+        document.getElementById("modal-rated").innerHTML = "Rated: " + data.rated;
+        document.getElementById("modal-score").innerHTML = "Imdb Score: " + data.imdb_score;
+        document.getElementById("modal-office-rating").innerHTML = "Office Rating: " + data.avg_vote;
+        document.getElementById("modal-description").innerHTML = "Description: " + data.description;
+        document.getElementById("modal-casting").innerHTML = "Casting: " + data.actors;  
+    });
+}
+
+function getMovieImageid(id){
+    fetch(base_url+id)
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("img-modal").src = data.image_url;
     });
 }
 
 
-bestMovieImage();
 getGenre();
+
+bestMovieImage();
