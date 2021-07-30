@@ -11,17 +11,14 @@ const swiper = new Swiper(".swiper-container", {
     },
 });
 const base_url = "http://localhost:8000/api/v1/titles/";
-const sorted_by_score = "?sort_by=+-imdb_score";
-const sort_genre = "?genre="
-const nb_page = "?page="
+const sorted_by_score = "sort_by=+-imdb_score";
+const sort_genre = "genre="
+const nb_page = "page="
 
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 var bestMovieBtn = document.getElementById("bestmovie-image");
-var bestMoviesSwiperWrapper = document.getElementById("bestMoviesSwiper");
-var bestActionMoviesSwiperWrapper = document.getElementById("bestActionMoviesSwiper");
-var bestRomanceMoviesSwiperWrapper = document.getElementById("bestRomanceMoviesSwiper");
-var bestComedyMoviesSwiperWrapper = document.getElementById("bestComedyMoviesSwiper");
+var bestMoviesSwiperGenre = document.getElementById("swiperGenre");
 var imageSwiperBtn = document.getElementById("img-swiper");
 
 bestMovieBtn.onclick = function() {
@@ -57,17 +54,7 @@ function bestMovieImage(){
     });
 }
 
-/* remettre tout le html dans le fichier html. NE pas passer de balise, juste passer l'id/class. 
-   Quand je click sur une image, passer l'url + id en parametre et utiliser cet url pour alimenter la modal.
-   Carousel : n'avoir plus qu'une fonction et passer le genre et nb de pages en paramètre.
-   Créer les slides div + img. Faire une fonction qui affiche toutes les images.
-   Créer un eventlistener onclick, appeler les méthodes de récupération de données
-   et les afficher dans la modal. 
-
-   */
-
 function getBestMovieData(url){
-    console.log(url);
     fetch(url)
     .then(res => res.json())
     .then(data => {
@@ -83,52 +70,53 @@ function getBestMovieData(url){
     });
 }
 
-function getBestRatedMovies(){
-    fetch("http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score")
-    .then(res => res.json())
-    .then(data => {
-        for (let i=1; i<data.results.length; i++){
-            var imgElem = document.createElement("img");
-            var newDiv = document.createElement("div");
-            newDiv.className = "swiper-slide";
-            imgElem.setAttribute('id', "img-swiper");
-            imgElem.setAttribute('src', data.results[i].image_url);
-            console.log(imgElem)
-            newDiv.appendChild(imgElem);
-            bestMoviesSwiperWrapper.appendChild(newDiv);
-        }
-    })
+function getGenre(){
+    var moviegenres = document.querySelector(".movie-genres");
+    for(let i = 0; i < moviegenres.children.length; i++){
+        genre = moviegenres.children[i].className;
+        swiperGenre = moviegenres.children[i].querySelector("#swiperGenre");
+        console.log(swiperGenre);
+        getMovieImagesByGenre(genre, swiperGenre);
+    }
 }
 
-function getMovieImagesByGenre(){
-    genre = document.querySelector(".Action").className
-    var movie_id = ""
-    for (let page=1; page<3; page++){
-        fetch(base_url + "?genre=" + genre + "&page=" + page)
+
+
+function getMovieImagesByGenre(genre, swiperGenre){
+    for (let page_image=2; page_image>0; page_image--){
+        if(genre == "sort_by=+-imdb_score"){
+            genre = ""
+        }
+        fetch(base_url + "?genre=" + genre + "&page=" + page_image + "&" + sorted_by_score)
         .then(res => res.json())
         .then(data => {
-            for (let i=1; i<data.results.length; i++){
+            for (let i=0; i<data.results.length; i++){
                 var imgElem = document.createElement("img");
                 var newDiv = document.createElement("div");
                 newDiv.className = "swiper-slide";
                 imgElem.setAttribute('id', "img-swiper");
                 imgElem.setAttribute('src', data.results[i].image_url);
-                movie_id = data.results[i].id;
-                console.log(imgElem)
+                var movie_id = data.results[i].id;
                 newDiv.appendChild(imgElem);
-                bestMoviesSwiperWrapper.appendChild(newDiv);
-                getMovieByGenre(id);
+                swiperGenre.appendChild(newDiv);
+                console.log(data.results[i].title)
+                /*getMovieData(movie_id);*/
+                if(page_image == 2 && i == 2){
+                    break;
+                }
             }
         })
-        /* une fois l'id récupéré, appeler la fonction getMovieByeGenre(id) */
+        /* une fois l'id récupéré, appeler la fonction getMovieByGenre(id) */
     }
 }
 
-function getMovieByGenre(id){
-    fetch(base_url + id)
+function getMovieData(id){
+    full_url = base_url + id
+    console.log(full_url)
+    fetch(full_url)
     .then(res => res.json())
     .then(data => {
-        for (let i=1; i<data.results.length; i++){
+        for (let i=0; i<data.results.length; i++){
             document.getElementById("modal-title").innerHTML = data.results[i].title;
             document.getElementById("modal-genre").innerHTML = "Genre: " + data.results[0].genres;
             document.getElementById("modal-published").innerHTML = "Published: " + data.results[i].date_published;
@@ -144,5 +132,4 @@ function getMovieByGenre(id){
 
 
 bestMovieImage();
-getBestRatedMovies();
-getMovieImagesByGenre();
+getGenre();
