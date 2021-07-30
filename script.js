@@ -10,7 +10,8 @@ const swiper = new Swiper(".swiper-container", {
         el: '.swiper-scrollbar',
     },
 });
-const base_url = "http://localhost:8000/api/v1/titles/";
+const api_url = "http://localhost:8000/api/v1/titles/"
+const base_url = "http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score";
 const sorted_by_score = "sort_by=+-imdb_score";
 const sort_genre = "genre="
 const nb_page = "page="
@@ -18,8 +19,8 @@ const nb_page = "page="
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 var bestMovieBtn = document.getElementById("bestmovie-image");
-var bestMoviesSwiperGenre = document.getElementById("swiperGenre");
-var imageSwiperBtn = document.getElementById("img-swiper");
+var bestMoviesSwiperGenre = document.querySelector(".swiper-wrapper");
+var imageSwiperBtn = document.querySelector(".swiper-slide");
 
 bestMovieBtn.onclick = function() {
     modal.style.display = "block";
@@ -33,19 +34,17 @@ span.addEventListener('click', function() {
 
 
 function getBestMovie(){
-    link = 'http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score';
-    fetch(link)
+    fetch(base_url)
     .then(res => res.json())
     .then(data => {
         console.log(data);
         document.getElementById("img-modal").src = data.results[0].image_url;
     });
-    getBestMovieData(link);
+    getBestMovieData(base_url);
 }
 
 function bestMovieImage(){
-    link = 'http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score';
-    fetch(link)
+    fetch(base_url)
     .then(res => res.json())
     .then(data => {
         document.getElementById("bestmovie-image").src = data.results[0].image_url;
@@ -72,36 +71,40 @@ function getGenre(){
     var moviegenres = document.querySelector(".movie-genres");
     for(let i = 0; i < moviegenres.children.length; i++){
         genre = moviegenres.children[i].className;
-        swiperGenre = moviegenres.children[i].querySelector("#swiperGenre");
-        console.log(swiperGenre);
+        swiperGenre = moviegenres.children[i].querySelector(".swiper-wrapper");
         getMovieImagesByGenre(genre, swiperGenre);
     }
 }
 
-
+function createImgElement(){
+    for (let k=0; k < bestMoviesSwiperGenre.children.length; i++){
+        var imgEl = document.createElement("img");
+        bestMoviesSwiperGenre.children[k].appendChild(imgEl);
+    }
+}
 
 function getMovieImagesByGenre(genre, swiperGenre){
     for (let page_image=2; page_image>0; page_image--){
-        if(genre == "sort_by=+-imdb_score"){
+        if(genre == "bestRatedMovies"){
             genre = ""
         }
-        fetch(base_url + "?genre=" + genre + "&page=" + page_image + "&" + sorted_by_score)
+        fetch(base_url + "&genre=" + genre + "&page=" + page_image)
         .then(res => res.json())
         .then(data => {
+            console.log(data)
             for (let i=0; i<data.results.length; i++){
                 var imgElem = document.createElement("img");
                 var newDiv = document.createElement("div");
                 newDiv.className = "swiper-slide";
-                imgElem.setAttribute('id', "img-swiper");
                 imgElem.setAttribute('src', data.results[i].image_url);
                 var movie_id = data.results[i].id;
                 newDiv.appendChild(imgElem);
                 swiperGenre.appendChild(newDiv);
-                imageSwiperBtn.addEventListener("click", function(){
-                    modal.style.display = block;
+                document.querySelector(".swiper-slide").addEventListener("click", function(){
+                    modal.style.display = "block";
                     getMovieGenreData(movie_id);
                     getMovieImageid(movie_id);
-                })
+                });
                 if(page_image == 2 && i == 1){
                     break;
                 }
@@ -111,7 +114,7 @@ function getMovieImagesByGenre(genre, swiperGenre){
 }
 
 function getMovieGenreData(id){
-    fetch(base_url + id)
+    fetch(api_url + id)
     .then(res => res.json())
     .then(data => {
         document.getElementById("modal-title").innerHTML = data.title;
@@ -127,14 +130,14 @@ function getMovieGenreData(id){
 }
 
 function getMovieImageid(id){
-    fetch(base_url+id)
+    fetch(api_url + id)
     .then(res => res.json())
     .then(data => {
         document.getElementById("img-modal").src = data.image_url;
     });
 }
 
-
 getGenre();
-
 bestMovieImage();
+getBestMovie();
+
