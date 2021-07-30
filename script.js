@@ -37,7 +37,6 @@ function getBestMovie(){
     fetch(base_url)
     .then(res => res.json())
     .then(data => {
-        console.log(data);
         document.getElementById("img-modal").src = data.results[0].image_url;
     });
     getBestMovieData(base_url);
@@ -73,15 +72,13 @@ function getGenre(){
         genre = moviegenres.children[i].className;
         swiperGenre = moviegenres.children[i].querySelector(".swiper-wrapper");
         getMovieImagesByGenre(genre, swiperGenre);
+        fillModalGenre(genre);
     }
 }
 
-function createImgElement(){
-    for (let k=0; k < bestMoviesSwiperGenre.children.length; i++){
-        var imgEl = document.createElement("img");
-        bestMoviesSwiperGenre.children[k].appendChild(imgEl);
-    }
-}
+/*
+    on image click get id, then call getmoviegenredata and getimageID to print on modal. 
+*/
 
 function getMovieImagesByGenre(genre, swiperGenre){
     for (let page_image=2; page_image>0; page_image--){
@@ -91,22 +88,50 @@ function getMovieImagesByGenre(genre, swiperGenre){
         fetch(base_url + "&genre=" + genre + "&page=" + page_image)
         .then(res => res.json())
         .then(data => {
-            console.log(data)
             for (let i=0; i<data.results.length; i++){
                 var imgElem = document.createElement("img");
                 var newDiv = document.createElement("div");
                 newDiv.className = "swiper-slide";
                 imgElem.setAttribute('src', data.results[i].image_url);
+                imgElem.className = "swiper-slide-img";
                 var movie_id = data.results[i].id;
                 newDiv.appendChild(imgElem);
                 swiperGenre.appendChild(newDiv);
-                document.querySelector(".swiper-slide").addEventListener("click", function(){
-                    modal.style.display = "block";
-                    getMovieGenreData(movie_id);
-                    getMovieImageid(movie_id);
-                });
+                document.querySelectorAll('.swiper-slide').forEach(item => {
+                    item.addEventListener('click', event => {
+                        modal.style.display = "block";
+                        getMovieGenreData(movie_id);
+                        getMovieImageid(movie_id);
+                    })
+                })
                 if(page_image == 2 && i == 1){
-                    break;
+                break;
+                }
+            }
+        })
+    }
+}
+
+
+function fillModalGenre(genre){
+    for (let page_image=2; page_image>0; page_image--){
+        if(genre == "bestRatedMovies"){
+            genre = ""
+        }
+        fetch(base_url + "&genre=" + genre + "&page=" + page_image)
+        .then(res => res.json())
+        .then(data => {
+            for (let i=0; i<data.results.length; i++){
+                var movie_id = data.results[i].id;
+                document.querySelectorAll('.swiper-slide-img').forEach(item => {
+                    item.addEventListener('click', event => {
+                        modal.style.display = "block";
+                        getMovieGenreData(movie_id);
+                        getMovieImageid(movie_id);
+                    })
+                })
+                if(page_image == 2 && i == 1){
+                break;
                 }
             }
         })
@@ -140,4 +165,3 @@ function getMovieImageid(id){
 getGenre();
 bestMovieImage();
 getBestMovie();
-
