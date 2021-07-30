@@ -17,55 +17,24 @@ const nb_page = "?page="
 
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
-var swiperImage = document.querySelector(".swiper-wrapper");
-var bestMovieBtn = document.querySelector(".bestmovie-container");
-var bestMoviesBtn = document.querySelector(".swiper-slide");
+var bestMovieBtn = document.getElementById("bestmovie-image");
 var bestMoviesSwiperWrapper = document.getElementById("bestMoviesSwiper");
 var bestActionMoviesSwiperWrapper = document.getElementById("bestActionMoviesSwiper");
 var bestRomanceMoviesSwiperWrapper = document.getElementById("bestRomanceMoviesSwiper");
 var bestComedyMoviesSwiperWrapper = document.getElementById("bestComedyMoviesSwiper");
-
-
-bestComedyMoviesSwiperWrapper.addEventListener("click", function(){
-    modal.style.display = "block";
-    getBestRatedComedyMovies();
-})
-
-bestRomanceMoviesSwiperWrapper.addEventListener("click", function(){
-    modal.style.display = "block";
-    getBestRatedRomanceMovies();
-})
-
-bestActionMoviesSwiperWrapper.addEventListener("click", function(){
-    modal.style.display = "block";
-    getBestRatedActionMovies();
-})
-
-bestMoviesSwiperWrapper.addEventListener('click', function() {
-    modal.style.display = "block";
-    getBestRatedMovies();
-  })
-  
-  // When the user clicks on <span> (x), close the modal
-  span.addEventListener('click', function() {
-    modal.style.display = "none";
-  })
+var imageSwiperBtn = document.getElementById("img-swiper");
 
 bestMovieBtn.onclick = function() {
     modal.style.display = "block";
     getBestMovie();
-  }
+}
+
+// When the user clicks on <span> (x), close the modal
+span.addEventListener('click', function() {
+    modal.style.display = "none";
+});
 
 
-/* Gets the image of the movie and prints it on the left
-   Gets the data of the movie and prints it on the right
-   of the modal 
-function getMovie(){
-    getMovieImage();
-    getMovieData();
-}*/
-
-/* get the best rated movie */
 function getBestMovie(){
     bestMovieOutput = "";
     link = 'http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score';
@@ -122,125 +91,58 @@ function getBestRatedMovies(){
             var imgElem = document.createElement("img");
             var newDiv = document.createElement("div");
             newDiv.className = "swiper-slide";
+            imgElem.setAttribute('id', "img-swiper");
             imgElem.setAttribute('src', data.results[i].image_url);
-            newDiv.appendChild(imgElem);
-            bestMoviesSwiperWrapper.appendChild(newDiv);
-        }
-    })
-    getBestRatedMovies2();
-}
-
-function getBestRatedMovies2(){
-    fetch("http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score&page=2")
-    .then(res => res.json())
-    .then(data => {
-        for (let i=1; i<4; i++){
-            var imgElem = document.createElement("img");
-            var newDiv = document.createElement("div");
-            newDiv.className = "swiper-slide" ;
-            imgElem.setAttribute('src', data.results[i].image_url);
+            console.log(imgElem)
             newDiv.appendChild(imgElem);
             bestMoviesSwiperWrapper.appendChild(newDiv);
         }
     })
 }
 
-function getBestRatedActionMovies(){
-    fetch("http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score&genre=Action")
+function getMovieImagesByGenre(){
+    genre = document.querySelector(".Action").className
+    var movie_id = ""
+    for (let page=1; page<3; page++){
+        fetch(base_url + "?genre=" + genre + "&page=" + page)
+        .then(res => res.json())
+        .then(data => {
+            for (let i=1; i<data.results.length; i++){
+                var imgElem = document.createElement("img");
+                var newDiv = document.createElement("div");
+                newDiv.className = "swiper-slide";
+                imgElem.setAttribute('id', "img-swiper");
+                imgElem.setAttribute('src', data.results[i].image_url);
+                movie_id = data.results[i].id;
+                console.log(imgElem)
+                newDiv.appendChild(imgElem);
+                bestMoviesSwiperWrapper.appendChild(newDiv);
+                getMovieByGenre(id);
+            }
+        })
+        /* une fois l'id récupéré, appeler la fonction getMovieByeGenre(id) */
+    }
+}
+
+function getMovieByGenre(id){
+    fetch(base_url + id)
     .then(res => res.json())
     .then(data => {
         for (let i=1; i<data.results.length; i++){
-            var imgElem = document.createElement("img");
-            var newDiv = document.createElement("div");
-            newDiv.className = "swiper-slide";
-            imgElem.setAttribute('src', data.results[i].image_url);
-            newDiv.appendChild(imgElem);
-            bestActionMoviesSwiperWrapper.appendChild(newDiv);
+            document.getElementById("modal-title").innerHTML = data.results[i].title;
+            document.getElementById("modal-genre").innerHTML = "Genre: " + data.results[0].genres;
+            document.getElementById("modal-published").innerHTML = "Published: " + data.results[i].date_published;
+            document.getElementById("modal-duration").innerHTML = "Duration: " + data.results[i].duration;
+            document.getElementById("modal-rated").innerHTML = "Rated: " + data.results[i].rated;
+            document.getElementById("modal-score").innerHTML = "Imdb Score: " + data.results[i].imdb_score;
+            document.getElementById("modal-office-rating").innerHTML = "Office Rating: " + data.results[i].avg_vote;
+            document.getElementById("modal-description").innerHTML = "Description: " + data.results[i].description;
+            document.getElementById("modal-casting").innerHTML = "Casting: " + data.results[i].actors;  
         }
-    })
-    getBestRatedActionMovies2();
-}
-
-function getBestRatedActionMovies2(){
-    fetch("http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score&genre=Action&page=2")
-    .then(res => res.json())
-    .then(data => {
-        for (let i=1; i<4; i++){
-            var imgElem = document.createElement("img");
-            var newDiv = document.createElement("div");
-            newDiv.className = "swiper-slide" ;
-            imgElem.setAttribute('src', data.results[i].image_url);
-            newDiv.appendChild(imgElem);
-            bestActionMoviesSwiperWrapper.appendChild(newDiv);
-        }
-    })
-}
-
-function getBestRatedRomanceMovies(){
-    fetch("http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score&genre=Romance")
-    .then(res => res.json())
-    .then(data => {
-        for (let i=1; i<data.results.length; i++){
-            var imgElem = document.createElement("img");
-            var newDiv = document.createElement("div");
-            newDiv.className = "swiper-slide";
-            imgElem.setAttribute('src', data.results[i].image_url);
-            newDiv.appendChild(imgElem);
-            bestRomanceMoviesSwiperWrapper.appendChild(newDiv);
-        }
-    })
-    getBestRatedRomanceMovies2();
-}
-
-function getBestRatedRomanceMovies2(){
-    fetch("http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score&genre=Romance&page=2")
-    .then(res => res.json())
-    .then(data => {
-        for (let i=1; i<4; i++){
-            var imgElem = document.createElement("img");
-            var newDiv = document.createElement("div");
-            newDiv.className = "swiper-slide" ;
-            imgElem.setAttribute('src', data.results[i].image_url);
-            newDiv.appendChild(imgElem);
-            bestRomanceMoviesSwiperWrapper.appendChild(newDiv);
-        }
-    })
-}
-
-function getBestRatedComedyMovies(){
-    fetch("http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score&genre=Comedy")
-    .then(res => res.json())
-    .then(data => {
-        for (let i=1; i<data.results.length; i++){
-            var imgElem = document.createElement("img");
-            var newDiv = document.createElement("div");
-            newDiv.className = "swiper-slide";
-            imgElem.setAttribute('src', data.results[i].image_url);
-            newDiv.appendChild(imgElem);
-            bestComedyMoviesSwiperWrapper.appendChild(newDiv);
-        }
-    })
-    getBestRatedComedyMovies2();
-}
-
-function getBestRatedComedyMovies2(){
-    fetch("http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score&genre=Comedy&page=2")
-    .then(res => res.json())
-    .then(data => {
-        for (let i=1; i<4; i++){
-            var imgElem = document.createElement("img");
-            var newDiv = document.createElement("div");
-            newDiv.className = "swiper-slide" ;
-            imgElem.setAttribute('src', data.results[i].image_url);
-            newDiv.appendChild(imgElem);
-            bestComedyMoviesSwiperWrapper.appendChild(newDiv);
-        }
-    })
+    });
 }
 
 
 bestMovieImage();
 getBestRatedMovies();
-getBestRatedActionMovies();
-getBestRatedRomanceMovies();
-getBestRatedComedyMovies();
+getMovieImagesByGenre();
