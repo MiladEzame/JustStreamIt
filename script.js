@@ -72,7 +72,6 @@ function getGenre(){
         genre = moviegenres.children[i].className;
         swiperGenre = moviegenres.children[i].querySelector(".swiper-wrapper");
         getMovieImagesByGenre(genre, swiperGenre);
-        fillModalGenre(genre);
     }
 }
 
@@ -82,6 +81,7 @@ function getGenre(){
 
 function getMovieImagesByGenre(genre, swiperGenre){
     for (let page_image=2; page_image>0; page_image--){
+        cpt = 1;
         if(genre == "bestRatedMovies"){
             genre = ""
         }
@@ -93,52 +93,26 @@ function getMovieImagesByGenre(genre, swiperGenre){
                 var newDiv = document.createElement("div");
                 newDiv.className = "swiper-slide";
                 imgElem.setAttribute('src', data.results[i].image_url);
-                imgElem.className = "swiper-slide-img";
-                var movie_id = data.results[i].id;
+                imgElem.setAttribute("id", ("swiper-slide"+cpt))
                 newDiv.appendChild(imgElem);
                 swiperGenre.appendChild(newDiv);
-                document.querySelectorAll('.swiper-slide').forEach(item => {
-                    item.addEventListener('click', event => {
-                        modal.style.display = "block";
-                        getMovieGenreData(movie_id);
-                        getMovieImageid(movie_id);
-                    })
-                })
+                document.getElementById(("swiper-slide"+cpt)).addEventListener("click", function(){
+                    var movie_id = data.results[i].id;
+                    modal.style.display = "block";
+                    return getMovieGenreData(movie_id);
+                });
+                cpt++;
                 if(page_image == 2 && i == 1){
-                break;
+                    break;
                 }
             }
         })
     }
 }
 
-
-function fillModalGenre(genre){
-    for (let page_image=2; page_image>0; page_image--){
-        if(genre == "bestRatedMovies"){
-            genre = ""
-        }
-        fetch(base_url + "&genre=" + genre + "&page=" + page_image)
-        .then(res => res.json())
-        .then(data => {
-            for (let i=0; i<data.results.length; i++){
-                var movie_id = data.results[i].id;
-                document.querySelectorAll('.swiper-slide-img').forEach(item => {
-                    item.addEventListener('click', event => {
-                        modal.style.display = "block";
-                        getMovieGenreData(movie_id);
-                        getMovieImageid(movie_id);
-                    })
-                })
-                if(page_image == 2 && i == 1){
-                break;
-                }
-            }
-        })
-    }
-}
 
 function getMovieGenreData(id){
+    getMovieImageid(id);
     fetch(api_url + id)
     .then(res => res.json())
     .then(data => {
