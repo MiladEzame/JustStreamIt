@@ -1,11 +1,10 @@
 const swiper = new Swiper(".swiper-container", {
-    direction: 'horizontal',
-	  loop:true,
     slidesPerView: 5,
     navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
     },
+    loop: true,
     scrollbar: {
         el: '.swiper-scrollbar',
     },
@@ -13,14 +12,11 @@ const swiper = new Swiper(".swiper-container", {
 const api_url = "http://localhost:8000/api/v1/titles/"
 const base_url = "http://localhost:8000/api/v1/titles/?sort_by=+-imdb_score";
 const sorted_by_score = "sort_by=+-imdb_score";
-const sort_genre = "genre="
-const nb_page = "page="
 
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 var bestMovieBtn = document.getElementById("bestmovie-image");
 var bestMoviesSwiperGenre = document.querySelector(".swiper-wrapper");
-var imageSwiperBtn = document.querySelector(".swiper-slide");
 
 bestMovieBtn.onclick = function() {
     modal.style.display = "block";
@@ -38,31 +34,34 @@ function getBestMovie(){
     .then(res => res.json())
     .then(data => {
         document.getElementById("img-modal").src = data.results[0].image_url;
-    });
-    getBestMovieData(base_url);
-}
-
-function bestMovieImage(){
-    fetch(base_url)
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById("bestmovie-image").src = data.results[0].image_url;
+        var id = data.results[0].id;
+        bestMovieImage(id);
+        getBestMovieData(id);
     });
 }
 
-function getBestMovieData(url){
-    fetch(url)
+function bestMovieImage(id){
+    fetch(api_url + id)
     .then(res => res.json())
     .then(data => {
-        document.getElementById("modal-title").innerHTML = data.results[0].title;
-        document.getElementById("modal-genre").innerHTML = "Genre: " + data.results[0].genres;
-        document.getElementById("modal-published").innerHTML = "Published: " + data.results[0].date_published;
-        document.getElementById("modal-duration").innerHTML = "Duration: " + data.results[0].duration;
-        document.getElementById("modal-rated").innerHTML = "Rated: " + data.results[0].rated;
-        document.getElementById("modal-score").innerHTML = "Imdb Score: " + data.results[0].imdb_score;
-        document.getElementById("modal-office-rating").innerHTML = "Office Rating: " + data.results[0].avg_vote;
-        document.getElementById("modal-description").innerHTML = "Description: " + data.results[0].description;
-        document.getElementById("modal-casting").innerHTML = "Casting: " + data.results[0].actors;  
+        document.getElementById("bestmovie-image").src = data.image_url;
+        document.getElementById("bestmovie-description").innerHTML = data.description;
+    });
+}
+
+function getBestMovieData(id){
+    fetch(api_url + id)
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("modal-title").innerHTML = data.title;
+        document.getElementById("modal-genre").innerHTML = "Genre: " + data.genres;
+        document.getElementById("modal-published").innerHTML = "Published: " + data.date_published;
+        document.getElementById("modal-duration").innerHTML = "Duration: " + data.duration;
+        document.getElementById("modal-rated").innerHTML = "Rated: " + data.rated;
+        document.getElementById("modal-score").innerHTML = "Imdb Score: " + data.imdb_score;
+        document.getElementById("modal-office-rating").innerHTML = "Office Rating: " + data.avg_vote;
+        document.getElementById("modal-description").innerHTML = "Description: " + data.long_description;
+        document.getElementById("modal-casting").innerHTML = "Casting: " + data.actors;  
     });
 }
 
@@ -75,12 +74,8 @@ function getGenre(){
     }
 }
 
-/*
-    on image click get id, then call getmoviegenredata and getimageID to print on modal. 
-*/
-
 function getMovieImagesByGenre(genre, swiperGenre){
-    for (let page_image=2; page_image>0; page_image--){
+    for (let page_image=1; page_image<3; page_image++){
         cpt = 1;
         if(genre == "bestRatedMovies"){
             genre = ""
@@ -123,7 +118,7 @@ function getMovieGenreData(id){
         document.getElementById("modal-rated").innerHTML = "Rated: " + data.rated;
         document.getElementById("modal-score").innerHTML = "Imdb Score: " + data.imdb_score;
         document.getElementById("modal-office-rating").innerHTML = "Office Rating: " + data.avg_vote;
-        document.getElementById("modal-description").innerHTML = "Description: " + data.description;
+        document.getElementById("modal-description").innerHTML = "Description: " + data.long_description;
         document.getElementById("modal-casting").innerHTML = "Casting: " + data.actors;  
     });
 }
@@ -137,5 +132,4 @@ function getMovieImageid(id){
 }
 
 getGenre();
-bestMovieImage();
 getBestMovie();
