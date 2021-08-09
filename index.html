@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +28,7 @@
         <div class="bestmovie">
             <h1>Best Movie</h1>
             <div class="bestmovie-container">
-                <img id="bestmovie-image">
+                <img id="bestmovie-image" src="" alt="Best Movie Image">
                 <p id="bestmovie-description"></p>
             </div>
         </div>
@@ -82,6 +82,22 @@
                 
                 </div>
             </div>
+
+            <div class="Drama">
+                <h1>Best Drama Movies</h1>
+                <div class="swiper-container">
+                    
+                    <!-- Additional required wrapper -->
+                    <div class = "swiper-wrapper">
+                    </div>
+                
+                    <!-- If we need navigation buttons -->
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                
+                </div>
+    
+            </div>
     
             <div class="Comedy">
                 <h1>Best Comedy Movies</h1>
@@ -107,11 +123,11 @@
             <div  class="modal-content">
                 <div class="split">
                     <div class="split-left">
-                        <img id="img-modal">
+                        <img id="img-modal" src="" alt="Movie Details">
                     </div>
     
                     <div class="split-right">
-                        <h1 id="modal-title"></h1></br>
+                        <h1 id="modal-title"> Title</h1><br>
                         <table>
                             <tr>
                                 <th id="modal-genre"></th>
@@ -128,7 +144,6 @@
                         </table>
                         <br><p id="modal-description"></p>
                         <br><p id="modal-casting"></p>
-                        <img id="data-modal">
                         <span class="close">&times;</span>
                     </div>
                 </div>

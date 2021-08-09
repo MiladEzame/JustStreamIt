@@ -19,8 +19,8 @@ var bestMovieBtn = document.getElementById("bestmovie-image");
 var bestMoviesSwiperGenre = document.querySelector(".swiper-wrapper");
 
 bestMovieBtn.onclick = function() {
-    modal.style.display = "block";
     getBestMovie();
+    modal.style.display = "block";
 }
 
 // When the user clicks on <span> (x), close the modal
