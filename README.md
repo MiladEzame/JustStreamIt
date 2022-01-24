@@ -31,7 +31,7 @@ using this command :
 - Once you've created the virtual environment, you have to activate it.
 	On __Windows__, type the following command :
 	```python	
-	.\environment_name\Scripts\activate
+	./environment_name/Scripts/activate
 	```
 	On __Unix__ or __MacOS__, type the following command:
 	```python 		
